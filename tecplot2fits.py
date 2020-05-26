@@ -19,7 +19,6 @@ def tofits(path=None):
     cols = lines[1].replace("VARIABLES=","").replace("\"","").replace(" ","").replace('\n','').split(',')
     data_file = np.loadtxt(path, skiprows=3)
 
-
     hdu = fits.PrimaryHDU()
     hdu.header['SIMPLE'] = True
     hdu.header['BITPIX'] = -32
@@ -29,14 +28,15 @@ def tofits(path=None):
     hdu.header['NAXIS2'] = int(fields[2].replace('J=',''))
     hdu.header['NAXIS3'] = len(cols)-4
     hdu.header['EXTEND'] = True
-    hdu.header['CRVAL1'] = np.min(data_file[:,3])
-    hdu.header['CRVAL2'] = np.min(data_file[:,4])
-    hdu.header['CDELT1'] = np.abs(data_file[0,3] - data_file[1,3])
-    hdu.header['CDELT2'] = np.abs(data_file[0,4] - data_file[1,4])
-    hdu.header['CRPIX1'] = 0
-    hdu.header['CRPIX2'] = 0
+    hdu.header['CRVAL1'] = np.min(data_file[:,2])
+    hdu.header['CRVAL2'] = np.min(data_file[:,3])
+    hdu.header['CDELT1'] = np.abs(data_file[0,2] - data_file[1,2])
+    hdu.header['CDELT2'] = np.abs(data_file[0,3] - data_file[1,3])
+    hdu.header['CRPIX1'] = 0.
+    hdu.header['CRPIX2'] = 0.
     hdu.header['CTYPE1'] = 'GLON-CAR'
     hdu.header['CTYPE2'] = 'GLAT-CAR'
+    hdu.header['CTYPE3'] = 'FREQ'
     hdu.header['RADESYS'] = 'ICRS'
     hdu.header['BUNIT'] = 'K'
     hdu.header['AUTHOR'] ='Conversor from tecplot2fits by d.diaz@irya.unam.mx'
